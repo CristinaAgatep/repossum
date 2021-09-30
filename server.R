@@ -10,6 +10,7 @@
 
 packages = c("mapcan", "shiny", "tidyverse")
 
+# Credit for the function for packages below goes to him: https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/
 checkpackages <- lapply(packages,
     FUN = function(x) {
         if (!require(x, character.only = TRUE)) {
@@ -19,12 +20,7 @@ checkpackages <- lapply(packages,
     }
 )
 
-library(shiny)
-library(tidyverse)
-library(mapcan)
 
-
-# Define server logic required to draw a histogram
 shinyServer(function(input, output) ({
     
 ####### Fire information are two datasets: One separated by grouped fire size, another with 
@@ -115,8 +111,7 @@ shinyServer(function(input, output) ({
             geom_polygon() +
             scale_fill_gradient2(name = "Number of wildfires by province") +
             theme_minimal() + 
-            coord_fixed() + 
-            ylim(0)
+            coord_fixed()
     })
     
     # Creates a choropleth provincial map of Canada for ALL fire sizes
@@ -133,6 +128,7 @@ shinyServer(function(input, output) ({
  
 #### SCATTERPLOT MAP WITH LOESS REGRESSION
     
+####### Will have to figure out how to set a minimum for the plot
     # Creates scatterplot for dataset with size information
     output$SizeScatterPlot <- renderPlot({
         
@@ -140,7 +136,7 @@ shinyServer(function(input, output) ({
             ggplot(aes(x=Year, y=Number)) + 
             geom_line() + 
             xlab("Year") + ylab("Number of wildfires") + 
-            geom_smooth(method="loess", fullrange=T) 
+            geom_smooth(method="loess", fullrange=T)
         
     })
     
