@@ -110,7 +110,7 @@ shinyServer(function(input, output) ({
             ggplot(aes(x=long, y=lat, group = group, fill = Number)) +
             geom_polygon() +
             scale_fill_gradient2(name = "Number of wildfires by province") +
-            theme_minimal() + 
+            theme_void() + 
             coord_fixed()
     })
     
@@ -121,7 +121,7 @@ shinyServer(function(input, output) ({
             ggplot(aes(x=long, y=lat, group = group, fill = Number)) +
             geom_polygon() +
             scale_fill_gradient2(name = "Number of wildfires by province") +
-            theme_minimal() + 
+            theme_void() + 
             coord_fixed()
     })
     
