@@ -53,17 +53,18 @@ shinyUI(fluidPage(
                        
 ### CONDITIONAL PANELS EXPLAINING SIZE DEFINITIONS DEPENDING ON WHAT IS CHOSEN
                        conditionalPanel(
-                         condition = "input.fire_size == 'Small/Medium fire'",
+                         condition = "input.fire_size_map == 'Small/Medium fire'",
                          p("Fires between the sizes of <0.1 hectares to 100 ha.")
                        ),
                        conditionalPanel(
-                         condition = "input.fire_size == 'Large fire'",
+                         condition = "input.fire_size_map == 'Large fire'",
                          p("Fires between the sizes of 100.1 hectares to 10,000 ha.")
                        ),
                        conditionalPanel(
-                         condition = "input.fire_size == 'Very large fire'",
+                         condition = "input.fire_size_map == 'Very large fire'",
                          p("Fires between the sizes of 10,000.1 hectares to >100,000 ha.")
                        )
+
                    ),
 
 #### MAIN PANEL
@@ -150,7 +151,22 @@ shinyUI(fluidPage(
 
 #### SIDE PANEL WITH PROVINCE AND FIRE SIZE SELECTION
                   sidebarPanel(
-                      uiOutput("province_ui"), uiOutput("fire_size_ui2")
+                      uiOutput("province_ui"), uiOutput("fire_size_ui2"),
+                      
+### CONDITIONAL PANELS EXPLAINING SIZE DEFINITIONS DEPENDING ON WHAT IS CHOSEN
+                      conditionalPanel(
+                        condition = "input.fire_size_plot == 'Small/Medium fire'",
+                        p("Fires between the sizes of <0.1 hectares to 100 ha.")
+                      ),
+                      conditionalPanel(
+                        condition = "input.fire_size_plot == 'Large fire'",
+                        p("Fires between the sizes of 100.1 hectares to 10,000 ha.")
+                      ),
+                      conditionalPanel(
+                        condition = "input.fire_size_plot == 'Very large fire'",
+                        p("Fires between the sizes of 10,000.1 hectares to >100,000 ha.")
+                      )
+                      
                   ),
                          
 #### MAIN PANEL WITH SCATTERPLOT
