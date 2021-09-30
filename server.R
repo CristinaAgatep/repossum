@@ -10,8 +10,7 @@
 
 packages = c("mapcan", "shiny", "tidyverse")
 
-package.check <- lapply(
-    packages,
+checkpackages <- lapply(packages,
     FUN = function(x) {
         if (!require(x, character.only = TRUE)) {
             install.packages(x, dependencies = TRUE)
@@ -28,8 +27,12 @@ library(mapcan)
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) ({
     
-
-##### SIZE.DATA information includes data grouped by Year, province, fire size. 
+####### Fire information are two datasets: One separated by grouped fire size, another with 
+    # all information.  I am certain there is  a more efficient way to work these datasets, 
+    #but I have not figured it out as of now!
+    
+    
+##### SIZE.DATA information includes data grouped by Year, province, fire size.
     # Pull dataset from URL, grouping by fire size class.
     # Year 2020 is removed because it does not have information on fire size
     size.data <- reactive({
@@ -101,6 +104,8 @@ shinyServer(function(input, output) ({
                     selected = "Ontario")
     })
     
+
+##### CHOROPLETH MAPS
     
     # Creates a choropleth provincial map of Canada for ALL fire sizes
     output$SizeMapPlot <- renderPlot({
@@ -110,7 +115,8 @@ shinyServer(function(input, output) ({
             geom_polygon() +
             scale_fill_gradient2(name = "Number of wildfires by province") +
             theme_minimal() + 
-            coord_fixed()
+            coord_fixed() + 
+            ylim(0)
     })
     
     # Creates a choropleth provincial map of Canada for ALL fire sizes
@@ -124,7 +130,10 @@ shinyServer(function(input, output) ({
             coord_fixed()
     })
     
+ 
+#### SCATTERPLOT MAP WITH LOESS REGRESSION
     
+    # Creates scatterplot for dataset with size information
     output$SizeScatterPlot <- renderPlot({
         
         size.data() %>% filter(Jurisdiction == input$province, Fire_size_category == input$fire_size_plot) %>%
@@ -135,6 +144,7 @@ shinyServer(function(input, output) ({
         
     })
     
+    # Creates scatter for dataset with all information
     output$AllScatterPlot <- renderPlot({
         
         all.data() %>% filter(Jurisdiction == input$province) %>%
