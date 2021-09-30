@@ -11,14 +11,50 @@
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
+#### Application is displayed as three tabs, each with their own side panel and main panel
+  
     # Application title
     titlePanel("Number of wildfires by province"),
         
+
         tabsetPanel(type = "tabs",
+                    
+##### 1. INFORMATION PANEL
+          tabPanel("Information", 
+                   
+                   h3("Application information", align = "center"),
+                   h4("Source of data: "), "Natural Resources Canada:", a("Number of fires by fires size class", href="https://open.canada.ca/data/en/dataset/c8dcf3a7-fb40-44e7-b478-17b20a2240a4"),
+                   br(),
+                   "Information on wildfires are from Wikipedia:", a("List of fires in Canada", href="https://en.wikipedia.org/wiki/List_of_fires_in_Canada"),
+                   h4("Objective: "), 
+                   p("With the startling effects of wildfires in Canada during the summer of 2021, the purpose of the application is to 
+                 get a sense of the number of active wildfires at the provincial level. The data is updated by year, and 
+                 includes information on the size of fires."),
+                   p("Rather than only looking at the total number of fires, fire size information was included to discern if there are 
+                     patterns within these categories (for an example, see the trends in British Columbia)."),
+                   h4("Limitations: "),
+                   p("There are many limitations as to what is shown on the application. For one, weather phenominons and
+                 natural disasters such as wildfires are extremely fickle, and it may be difficult to chart weather trends without a 
+                 large number of data on a big temporal range. Also, as wildfires are expected to be correlated to monthly information, it would be interesting to look at the trends on 
+                 a monthly, rather than only on a yearly, basis."),
+                 p("Further analyses on this topic may benefit using information that contributes to the presence of 
+                 wildfires, such as temperature data, or information that could effect the size of fires, such as information on 
+                 fire-fighting practices in an area.")
+                   
+                   
+          ),
+
+##### 2. CHOROPLETH MAP PANEL
             tabPanel("Map of provinces" ,
                sidebarLayout(
+                 
+#### SIDEPANEL WITH YEAR AND FIRE SIZE CHOICES
                    sidebarPanel(
-                       uiOutput("year_ui"), uiOutput("fire_size_ui"),
+                     
+                       uiOutput("year_ui"), # Year Select input
+                       uiOutput("fire_size_ui"), # Fire category select input
+                       
+### CONDITIONAL PANELS EXPLAINING SIZE DEFINITIONS DEPENDING ON WHAT IS CHOSEN
                        conditionalPanel(
                          condition = "input.fire_size == 'Small/Medium fire'",
                          p("Fires between the sizes of <0.1 hectares to 100 ha.")
@@ -32,10 +68,14 @@ shinyUI(fluidPage(
                          p("Fires between the sizes of 10,000.1 hectares to >100,000 ha.")
                        )
                    ),
+
+#### MAIN PANEL
                    mainPanel(
                       h3("Canadian provincial map: Wildfire counts by year", align = "center"), 
                       p("The map below provides information on the number of active fires for each year
                        between 1990 and 2019, at the province level. Fires can also be subsetted by size."),
+                      
+### PLOTS ARE DEPENDENT ON WHICH FIRE SIZE CATEGORY IS CHOSEN (ALL OR NOT ALL)
                       conditionalPanel(
                         condition = "input.fire_size_map == 'All'",
                         plotOutput("AllMapPlot")
@@ -44,6 +84,8 @@ shinyUI(fluidPage(
                         condition = "input.fire_size_map != 'All'",
                         plotOutput("SizeMapPlot")
                       ),
+
+### INFORMATION ON NOTABLE WILDFIRES BASED ON YEAR CHOSEN
                       conditionalPanel(
                         condition = "input.year == 2019",
                           h4("Notable fires in 2019: "),
@@ -103,17 +145,25 @@ shinyUI(fluidPage(
                       )
                       
                       ))),
-      
+
+
+##### 3. SCATTERPLOT PANEL
             tabPanel("Number of fires by year", 
                      sidebarLayout(
+
+#### SIDE PANEL WITH PROVINCE AND FIRE SIZE SELECTION
                          sidebarPanel(
                              uiOutput("province_ui"), uiOutput("fire_size_ui2")
                          ),
+                         
+#### MAIN PANEL WITH SCATTERPLOT
                      mainPanel(
                      h3("Number of wildfires by year for each province", align = "center"),
                      p("A simple scatterplot displayed for each province that graphs the number of wildfires 
                        by year. This can also be subsetted by fire size."),
                      p(""),
+                    
+### PLOT DEPENDENT ON FIRE SIZE CATEGORY CHOSEN
                      conditionalPanel(
                        condition = "input.fire_size_plot == 'All'",
                        plotOutput("AllScatterPlot")
@@ -122,29 +172,9 @@ shinyUI(fluidPage(
                        condition = "input.fire_size_plot != 'All'",
                        plotOutput("SizeScatterPlot")
                      )
-                     ))),
-            
-            tabPanel("Information", 
-      
-                         h3("Application information", align = "center"),
-                         h4("Source of data: "), "Natural Resources Canada:", a("Number of fires by fires size class", href="https://open.canada.ca/data/en/dataset/c8dcf3a7-fb40-44e7-b478-17b20a2240a4"),
-                         br(),
-                         "Information on wildfires are from Wikipedia:", a("List of fires in Canada", href="https://en.wikipedia.org/wiki/List_of_fires_in_Canada"),
-                         h4("Objective: "), 
-                         p("With the startling effects of wildfires in Canada during the summer of 2021, the purpose of the application is to 
-                           get a sense of the number of active wildfires at the provincial level. The data is updated by year, and 
-                           includes information on the size of fires. "),
-                         h4("Limitations: "),
-                         p("There are many limitations as to what is shown on the application. For one, weather phenominons and
-                           natural disasters such as wildfires are extremely difficult to predict, and it is difficult to predict the 
-                           presence or the number of wildfires that may occur in future years based on the years before. While the graph
-                           can show trends on increased or decreased numbers of wildfires, it's difficult to say that next year will 
-                           continue these trends. Further analyses on this topic may benefit using information that contributes to the presence of 
-                           wildfires, such as temperature data, or information that could effect the size of fires, such as information on 
-                           fire-fighting practices in an area.")
-               
-                   
-             )
+                     )))
+
+
         )
     )
 )
