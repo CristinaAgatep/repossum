@@ -8,7 +8,7 @@
 #
 
 
-# Define UI for application that draws a histogram
+
 shinyUI(fluidPage(
 
 #### Application is displayed as three tabs, each with their own side panel and main panel
@@ -16,32 +16,29 @@ shinyUI(fluidPage(
     # Application title
     titlePanel("Number of wildfires by province"),
         
-
         tabsetPanel(type = "tabs",
                     
 ##### 1. INFORMATION PANEL
           tabPanel("Information", 
                    
-                   h3("Application information", align = "center"),
-                   h4("Source of data: "), "Natural Resources Canada:", a("Number of fires by fires size class", href="https://open.canada.ca/data/en/dataset/c8dcf3a7-fb40-44e7-b478-17b20a2240a4"),
-                   br(),
-                   "Information on wildfires are from Wikipedia:", a("List of fires in Canada", href="https://en.wikipedia.org/wiki/List_of_fires_in_Canada"),
-                   h4("Objective: "), 
-                   p("With the startling effects of wildfires in Canada during the summer of 2021, the purpose of the application is to 
-                 get a sense of the number of active wildfires at the provincial level. The data is updated by year, and 
-                 includes information on the size of fires."),
-                   p("Rather than only looking at the total number of fires, fire size information was included to discern if there are 
-                     patterns within these categories (for an example, see the trends in British Columbia)."),
-                   h4("Limitations: "),
-                   p("There are many limitations as to what is shown on the application. For one, weather phenominons and
-                 natural disasters such as wildfires are extremely fickle, and it may be difficult to chart weather trends without a 
-                 large number of data on a big temporal range. Also, as wildfires are expected to be correlated to monthly information, it would be interesting to look at the trends on 
-                 a monthly, rather than only on a yearly, basis."),
-                 p("Further analyses on this topic may benefit using information that contributes to the presence of 
-                 wildfires, such as temperature data, or information that could effect the size of fires, such as information on 
-                 fire-fighting practices in an area.")
-                   
-                   
+             h3("Application information", align = "center"),
+             h4("Source of data: "), "Natural Resources Canada:", a("Number of fires by fires size class", href="https://open.canada.ca/data/en/dataset/c8dcf3a7-fb40-44e7-b478-17b20a2240a4"),
+             br(),
+              "Information on wildfires are from Wikipedia:", a("List of fires in Canada", href="https://en.wikipedia.org/wiki/List_of_fires_in_Canada"),
+             h4("Objective: "), 
+             p("With the startling effects of wildfires in Canada during the summer of 2021, the purpose of the application is to 
+              get a sense of the number of active wildfires at the provincial level. The data is updated by year, and 
+              includes information on the size of fires."),
+             p("Rather than only looking at the total number of fires, fire size information was included to discern if there are 
+               patterns within these categories (for an example, see the trends in British Columbia)."),
+             h4("Limitations: "),
+             p("There are many limitations as to what is shown on the application. For one, weather phenominons and
+              natural disasters such as wildfires are extremely fickle, and it may be difficult to chart weather trends without a 
+              large number of data on a big temporal range. Also, as wildfires are expected to be correlated to monthly information, it would be interesting to look at the trends on 
+              a monthly, rather than only on a yearly, basis."),
+           p("Further analyses on this topic may benefit using information that contributes to the presence of 
+              wildfires, such as temperature data, or information that could effect the size of fires, such as information on 
+              fire-fighting practices in an area.")
           ),
 
 ##### 2. CHOROPLETH MAP PANEL
@@ -149,15 +146,15 @@ shinyUI(fluidPage(
 
 ##### 3. SCATTERPLOT PANEL
             tabPanel("Number of fires by year", 
-                     sidebarLayout(
+              sidebarLayout(
 
 #### SIDE PANEL WITH PROVINCE AND FIRE SIZE SELECTION
-                         sidebarPanel(
-                             uiOutput("province_ui"), uiOutput("fire_size_ui2")
-                         ),
+                  sidebarPanel(
+                      uiOutput("province_ui"), uiOutput("fire_size_ui2")
+                  ),
                          
 #### MAIN PANEL WITH SCATTERPLOT
-                     mainPanel(
+                  mainPanel(
                      h3("Number of wildfires by year for each province", align = "center"),
                      p("A simple scatterplot displayed for each province that graphs the number of wildfires 
                        by year. This can also be subsetted by fire size."),
