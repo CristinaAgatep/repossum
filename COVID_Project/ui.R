@@ -15,156 +15,143 @@ shinyUI(fluidPage(
     
     tabsetPanel(type="tabs",
                 
-                tabPanel("Information on population and data",
+                tabPanel("Information",
                          
-                         h3("COVID Project Information", align = "center"),
+                         h3("Application Information", align = "center"),
+                         
+                         h4("Goal of application"),
+                            p("The goal of the application is to explore a pre-determined definition of herd
+                              immunity by allowing the user to adjust a number of realistic variables
+                              related to COVID spread. The app will be in the form of a proxy SIR model
+                              as a way to measure this spread."), br(),
                          
                          h4("Population definition:"),
-                         p("The population of interest is defined as a closed group of students in one
-            elementary school in Alberta. Alberta has been seeing a lot of 
-            recent outbreaks in their schools, so it may be a good place to start to see how
-            herd immunity can be reached in an elementary school in terms
-            of vaccinations for a group that has yet to be immunized (more on this later)."),
-                         
-                         a("October 7 new article on Alberta school outbreaks", href="https://www.citynews1130.com/2021/10/07/alberta-schools-covid-outbreaks/"),
-                         p(),
-                         a("What to expect in Alberta schools", href="https://www.alberta.ca/k-12-learning-during-covid-19.aspx"),
+                             p("The population of interest is defined as a closed group of elementary school-aged
+                                students (e.g. students in a boarding school). This would include 
+                               children between the ages of 6 to 12."), 
+                            p('The assumption made with this population is that the children are in a completely closed 
+                              environment with no restrictions applied for COVID-related reasons (e.g. social distancing, 
+                              removal from school due to symptoms). While this is not a realistic assumption to make, the app
+                              will allow us to look at a COVID situation in which no measures have been enforced. This
+                              can potentially be compared to real-life situations in which restrictive measures have been put in
+                              place in elementary schools.'), br(),
                          
                          h4("Herd Immunity Definition: "),
-                         p("In Alberta schools, there are a couple of different labels to define
-                          the severity of the number of COVID cases. If there were at least 2 positive COVID cases 
-                          while these infected students were at school, the school will be listed as Alert.
-                          If there were at least ten positive COVID cases, the school will be listed
-                          as an Outbreak."),
-   
-                          p("The herd immunity definition will be defined as the school having any number of COVID cases
-                          so that the school is neither listed as an Alert, nor an Outbreak, over a certain period
-                          of time. Explicitly, this would mean that the school would have 0 or 1 active COVID cases 
-                          over a user-defined period of time."),
-
-                          p("I'll be working with the understanding that the definition of herd immunity can be seen as dynamic and that a population may 
-                          change its herd immunity status over time (Cristina: May need something to back this up). Thus, the user can 
-                            define both the number of days the simulation will run for, as well as the range of days
-                            that the user would like to determine if herd immunity has been reached. The assumption of herd immunity
-                            will likely be stronger over longer periods of time, and if it was found to be reached nearer to the end of 
-                            the simulated days."),
-                         a("Definitions of school status in Alberta", href="https://www.alberta.ca/lookup/covid-19-school-status-map.aspx"),
-                         p(),
-                         a("Rethinking herd immunity", href="https://catalyst.nejm.org/doi/full/10.1056/CAT.21.0288"),
+                            p("Very generally, herd immunity is defined as the amount of protection the public has from 
+                              infection of some disease. Therefore, herd immunity in this application is defined 
+                              as follows: "), 
+                            h5("Herd immunity threshold: If less than 30% of the total student population had 
+                                been infected with COVID during the entire run of the simulation, herd immunity
+                               is considered to be achieved under the conditions set by the user."),
+                            p("Of course, this is only one definition, and it does not take into account factors such as the trend
+                            of the caseload, how it compares to the number of Infected students at the beginning of the simulation, etc.
+                              The user is free to apply their own definitions based on the number and percentage of Infected students 
+                              and the trends they are able to see in the model."), br(),
                          
-                         h4("Vaccine efficacy:"),
-                         p("Most elementary schools in Canada only include grades from kindergarten to grade 6, the majority of
-                          which are ages 5 to 11. 
-                          Currently, people aged 12 and above are 
-                          able to be vaccinated in Canada, excluding most elementary
-                          school-aged children. However, Pfizer has undergone testing for 
-                          vaccinations for this age group, and planning has started to begin vaccinating
-                          children by November 1. It will be interesting to see how the beginning of 
-                          vaccinations for this group could potentially curb the outbreaks we are seeing in this
-                          region."), 
-    
-                         p("At the time of writing this, there has not been any official scientific
-                          results from the pharmaceutical companies.  By the second 
-                          dose, Pfizer claims that the efficacy of the vaccine for children 
-                          is the same as that of younger adults and teenagers. The real world efficacy
-                          of Pfizer is about 90%. Currently, we are only considering double vaccinated children, but this 
-                           may change in the final app, as we may want to consider lower efficacies under single vaccinated 
-                           children, due to uncertainties of the efficacy of vaccinations in kids."),
-                         a("Pfizer vaccinations for kids", href="https://www.ctvnews.ca/health/coronavirus/pfizer-says-covid-19-vaccine-works-in-kids-ages-5-to-11-1.5592188"),
-                         
-                         h4("Disease spread potential:"),
-                         p("The disease spread potential in the app will be determined by four things:"),
-                         p("1. Elementary schools have used cohorts to restrain the spread of COVID. To simulate this, 
-                         I will split the students into equal sized classes, and assume that each class is its own cohort (i.e. infected
-                         students can only infect students in their own classes. Additionally, probability of infection is proportional 
-                         to the number of students in the classroom that are infected (I'll likely change this if I can later)."),
-                         p("2. Students are asked to stay home when they are found to have symptoms. Among people aged 19 or younger, a review found
-                           that between 58% and 85% of children are symptomatic when infected with COVID. This percentage is applied so that 
-                           infected students may be kept home, and thus unable to spread the virus to their peers."),
-                         p("3. 67.3% of adults aged 30 to 39 (parents) are vaccinated in Alberta against COVID. A possible 
-                            infection from a parent to child will be encorporated as a proxy for variability, as 
-                            schools are not necessarily closed environments."),
-                         p("4. How quickly the vaccination uptake is in the school also affects spread. The user can determine how 
-                           quickly vaccines are provided to the population (probability of being vaccinated on Day t (Unsure if this is
-                           the best way to quantify this))."),
-                         
-                         p("In the app, I've defined a probability of transmission at Day t, but I am currently working on how this should be quantified in the study. 
-                           I've put them as user-defined values for now."),
-                         
-                         a("Current vaccination rates in Alberta", href="https://www.alberta.ca/stats/covid-19-alberta-statistics.htm"),
-                         p(),
-                         a("Symptoms of COVID in children", href="https://www.canada.ca/en/public-health/services/diseases/2019-novel-coronavirus-infection/guidance-documents/signs-symptoms-severity.html"),      
+                         h4("SIR model proxy:"),
+                         p("For reasons of simplicity and interpretability, an alternative 
+                              SIR model, rather than the traditional SIR model, was used for this application. The model 
+                              groups the 
+                              population into three categories, and graphs how the category numbers change over time through
+                              interactions with each other. The definitions of these categories are as follows:"),
+                         h5("1. Susceptible:"),
+                             p("This group is susceptible to being infected at a given time, given interactions with people from
+                             the infected population. This is usually the largest group at the beginning of the simulation, but is 
+                               expected to decrease over time as more become infected."),
+                         h5("2. Infected:"),
+                            p("This is the number of students infected with COVID at a given time. This number of cases is the basis of the 
+                             definition of herd immunity. Depending on the settings the user will define, this number may 
+                              go through various increases and decreases over time"),
+                         h5("3. Recovered/Vaccinated:"),
+                            p("This is the number of students that have been vaccinated at the beginning of the simulation, or have 
+                            recovered from a prior infected status. Vaccination in this case is defined as a double dose of the Pfizer
+                              vaccine. It is expected that this number will largely increase over time."),
                          
                 ),
-                
-                tabPanel("Information on app",
-                         br(),
-                         p("The application is currently at a minimal stage with lots of tweaks and adjustments needed and errors fixed, especially on the 
-                         parameters. Ideally these will all be gone by the time the final app is completed."),
-                         p("The basis of the app is a proxy of an SIR model to track how the number of COVID cases
-                           and vaccination rates interact over time in a pseudo-closed environment such as a school."),
-                         h2("Student Categories", align = "center"),
-                         p("Students are categorized into one of the following groups:"),
-                         h4("Susceptible:"),
-                         p("The transmission probability and the probability of being given a vaccine on Day t
-                                is applicable for this group. The number of people in this group will decrease over time."),
-                         h4("Infected:"),
-                         p("Can only come from students from the susceptible group. These students are able to infect others in 
-                                their classroom through the transmission probability. To simulate an elementary school with an Alert status, each of the 100 students has a 4/100 chance of being
-                           infected at the start of the study, to allow for some variability. One big assumption is that after a student has recovered,
-                                they will become recovered/removed from the susceptible population. Even though COVID has been shown to reappear in 
-                                people that have already gotten COVID, it's fairly rare. This may change
-                                in the final app if it does not make things too complicated."),
-                         h4("At home:"),
-                         p("While not in the current version of the app (hoping that I can show this graph in the final version), 
-                                this includes students that were infected, but were taken home so as not to infect others in the school. In 
-                                the graph, these counts are grouped with the infection counts."),
-                         h4("Removed/recovered:"),
-                         p("These students are either vaccinated, or have recovered from COVID. The big assumption 
-                                is that the vaccine has 100% efficacy. This assumption might be too much, as the vaccine for kids has not been 
-                                finalized and is still in the planning stage, so this is hoped to change in the final app."),
                          
-                         h2("User-defined values", align = "center"),
-                         h4("Number of students"),
-                         p("Currently, the number of students in the simulation is kept at 100. Ideally this will change for the final
-                           product, if I can figure out how to deal with the division of classes."),
-                         h4("Transmission Probability:"),
-                         p("The user can determine a probability of COVID transmission at Day t. (Currently unsure of 
-                           what kind of value range would be appropriate, and trying to find data to support it."),
-                         h4("Proportion of parents unvaccinated:"),
-                         p("While in Alberta, 32.7% (the current value on the UI) of adults between 30-39 are unvaccinated as of October 7, there may be other areas of 
-                           interest the user may want to simulate. "),
-                         h4("Probability of infected student being sent home"),
-                         p("The user can determine the probability that an infected child 
-                           will be brought home due to symptoms appearing."),
-                         h4("Probability of vaccination"),
-                         p("The user can determine the vaccination rate (i.e. the probability a susceptible
-                           student will be vaccinated on Day t). "),
-                         h4("Number of simulated days"),
-                         p("A user defined number of days for the simulation to run."),
-                         h3("The following user-defined variables are related to the definition of herd immunity", align="center"),
-                         h4("Start of date interval & End of date interval"),
-                         p("The time interval with which to determine if herd immunity is present
-                           in the population."),
+                tabPanel("App Instructions",
+        
+                         h3("User-Defined Values and Calculations", align = "center"),
                          
-                         h2("Currently missing"),
-                         p("The app as it stands does not answer the question of how herd immunity can be achieved. 
-                         The final app should have the total number of active cases that were found between the defined 
-                           intervals, an indication on whether the school was in an Alert or Outbreak phase in the time interval, or 
-                           whether the simulation met our definition of herd immunity.")
+                         p("Below will provide information on the dynamic values that the 
+                           user can define, and the implications for the 
+                           results of the model"),
                          
+                         h4("General values"),
+                         
+                         h5("Number of Time Intervals"),
+                             p("Time intervals are separated by two weeks (i.e. Time 2 is two weeks apart from Time 1). 
+                             It takes about two weeks (1) for one person to recover from mild COVID symptoms and to no longer be 
+                             contagious. This is the assumption we make in the application - for all persons who become
+                             infected, they will be in the Recovered category by the next time interval."),
+                             p("A small length of time for the simulation may allow for an easier herd immunity achievement,
+                               but it may not provide a full picture of how COVID infections may play out through the population."),
+                         
+                         h5("Number of students"),
+                            p("The user can define how many students to include in the study. By default, this number is set to 30, 
+                              as this is the usual number of students in one classroom. Due to changes to classrooms because of COVID 
+                              cohorts, and general variations in school sizes, the user can choose numbers from as low as 20 students, 
+                              to as high as 60."),
+                            p("A small number of students relative to the amount of time in the simulation will likely provide
+                              a more difficult environment to achieve herd immunity."), br(),
+                         
+                         h4("Susceptible -> Infected population movement"),
+                         p("These values will affect how the population moves from the Susceptible to the Infected categories."),
+                         
+                         h5("Approx. Number of students infected at beginning of study"),
+                            p("The value defined here will compute the probability for 
+                              each student to be infected at the beginning of the simulation
+                              (hence 'approximate'). The default value is set to 5 students."),
+                            p("A higher number of this value will increase the potential spread, as
+                              well as the difficulty of achieving herd immunity."),
+                         
+                         h5("Number of interactions for each infected students"),
+                            p("Each infected student interacts with a student or students randomly selected in the population. 
+                              The number of students each infected student interacts with is dependent on this user-defined value.
+                              Those that interact with infected students have some probability of becoming infected themselves
+                              (to be defined below)."),
+                            p("A smaller number of interactions among infected students will often show more gradual increases
+                            or decreases in the caseload, while a higher number can display peaks of infections."),
+                         
+                         h5("Rt at the beginning of the study"),
+                           p("Rt (2) is defined as the effective reproductive value of the disease. The value tells us the number 
+                              of people that each Infected case is likely to infect during the run of the disease. It is also 
+                              a dynamic number that changes based on the current environment (e.g. restriction measures, population
+                              mobility), which makes it different from the reproductive value R0, the static reproductive number at the 
+                              beginning of the pandemic."),
+                            p("This user-defined value of Rt helps compute the probabilty in the app that a susceptible student will become 
+                              Infected after interacting with an infected student. The simple calculation is as follows:"),
+                            p("P(Susceptible student will become Infected after interaction) == Rt / Number of interactions of each 
+                              Infected student)"),
+                            p("One note to the Rt value applied here is that the Rt will change over time in the application as the 
+                              number of removed persons in the population increases. While the probability formula still uses the 
+                              same calculation and Rt values throughout the app, the actual Rt value of the simulation should decrease
+                              when less people are able to be infected as time goes on."),
+                            p("The current Rt value of 0.92 was the Rt value for Ontario in mid-October (3), while the range of values are 
+                              based on the lowest and highest Rt values around other areas in Canada at that time."),
+                            p("Larger Rt values will often lead to a higher number of infectious cases at the beginning
+                              of the study, but despite the value, it should taper out over time."), br(),
+                     
+                         h4("Susceptible -> Removed population movement"),
+                         p("These values will affect how the population moves from the Susceptible to the Removed categories."),
+                         
+                         h5("Probability of Vaccination"),
+                            p("This value affects the number of students that are vaccinated at the beginning of the study. 
+                              The more students that are vaccinated leads to decreased potential for COVID spread. 
+                              Vaccinated students also cannot be infected at the first time interval."),
+                            p("The user-defined probability is applied to each individual student. The default value is 0.14, to simulate 
+                                a school where students range from grades 1 - 7, and around 14% of students are in grade 7 and aged 
+                              12 and over (assuming that the grade sizes are fairly equal)."),
+                            p("The larger the number of vaccinated students at the beginning of the study, the lower the 
+                              potential spread of the disease."), br(),
+                         
+                         h4("Removed -> Infected population movement"),
+                            p("While not affected by a user-defined value, students that have been vaccinated or are recovered 
+                              still have the possibility of being infected. Using the known double dose Pfizer efficacy of more 
+                              than 90% (4), as well as the unknown but fairly low rate of re-infection, we will use an approximation of 92% 
+                              efficacy as a proxy for the probability that students in the Removed category will not become infected given
+                              an interaction with an infected student.")
                 ),
-                
-                tabPanel("Main Concerns",
-                         p("I have some concerns. The main ones are:"),
-                         p("1. I cannot tell if I'm going too complicated or if I'm not looking into enough factors with this."),
-                         p("2. Each time the simulation is run, it creates an entirely new student population with (possibly) widely
-                           different infection rates, which may make it difficult to form conclusions."),
-                         p("3. The values for my parameters are not based on rigorous data - this will hopefully change later on."),
-                         p("4. I'm quite uncertain of how relaxed my herd immunity definition can be."),
-                         p("This tab will be deleted for the final product. ")
-                         
-                         ),
                 
                 tabPanel("Plot",
                          # Sidebar with a slider input for number of bins
@@ -173,59 +160,92 @@ shinyUI(fluidPage(
                                  
 #### Number of Students
                                  sliderInput(inputId="N.Students.ui",
-                                             label="Number of students in study:",
-                                             min=100,
-                                             max=100,
-                                             value=100),
-                                 
-#### Probability of transmission
-                                 sliderInput(inputId="Transmission.ui",
-                                             label="Transmission Probability:",
-                                             min=0,
-                                             max=0.1,
-                                             value=0.03),
-                                 
-#### Proportion of parents unvaccinated
-                                 sliderInput(inputId="Parents.unvaccinated.ui",
-                                             label="Proportion of parents unvaccinated",
-                                             min=0, 
-                                             max=0.5,
-                                             value=(1-0.673)),
-                                 
-#### Probability of symptoms developing
-                                 sliderInput(inputId="P.Symptoms.ui",
-                                             label="Probability of an INFECTED student being sent home:",
-                                             min=0.58,
-                                             max=0.85,
-                                             value=0.85),
-                                 
-#### Probability of vaccination
-                                 sliderInput(inputId="P.Vaccinated.ui",
-                                             label="Probability a SUSCEPTIBLE student will get vaccinated on Day t:",
-                                             min=0, 
-                                             max=0.1,
-                                             value=0.05),
-#### Number of simulated days
+                                             label="Number of students:",
+                                             min=20,
+                                             max=60,
+                                             value=30),
+#### Number of time intervals                                 
+                                 sliderInput(inputId="N.Time.ui",
+                                             label="Number of Time Intervals:",
+                                             min=2,
+                                             max=30,
+                                             value=10),
+                                 p("Note: The difference between two intervals is two weeks."),
+                                 br(),
 
-                                 sliderInput(inputId="Number.of.days.ui",
-                                             label="Number of simulated days:",
-                                             min = 30,
-                                             max = 120,
-                                             value = 30,
-                                             step=1),
-                                 
-                                 uiOutput("Start.herd.immunity.ui"),
-                                 uiOutput("End.herd.immunity.ui")
+#### Number of interactions for each infected student                                
+                                 sliderInput(inputId="N.Interactions.ui",
+                                             label="Number of interactions for each infected student:",
+                                             min=1,
+                                             max=5,
+                                             value=2),
+#### Rt value     
+                                 sliderInput(inputId="Rt.ui",
+                                             label="Rt at the beginning of study:",
+                                             min=0.79,
+                                             max=1.16,
+                                             value=0.92),
+#### Probability of vaccination for each student                     
+                                 sliderInput(inputId="P.Vaccinated.ui",
+                                              label="Probability of Vaccination",
+                                              min=0, 
+                                              max=0.60, 
+                                              value=0.14),
+#### Probability of being infected at beginning
+                                sliderInput(inputId="P.Infected.ui",
+                                            label="Approx. Number of students Infected at beginning of study",
+                                            min=1, 
+                                            max=5,
+                                            value=5)
                              ),
                              
                              # Show a plot of the generated distribution
                              mainPanel(
-                                 h4("A proxy SIR COVID model of elementary school students"),
+                                 h4("A proxy SIR COVID model of elementary school students in a closed environment"),
                                  plotOutput("SIR.Plot"),
-                                 uiOutput("Number.of.cases.text")
+
+### Text to explain whether herd immunity has been achieved based on the definition 
+                                 h4("Herd Immunity Exploration:"),
+                                 p("Herd immunity definition: If the percentage of Infected cases
+                                 throughout the entire simulation is 30% or less of the student population,
+                                 then herd immunity has been achieved."),
+                                 uiOutput("Start.Infected.Text"), br(),
+                                 uiOutput("Total.Infected.Text"), br(),
+                                 # uiOutput("Comparison.Infected.Text"), br(),
+                                 uiOutput("Herd.Immunity.Text"), br(),
+                                 p("*Note: The number of cases may not necessarily equal the number
+                                   of students that have been Infected, as students may be
+                                   Infected more than once.")
                              )
                          )
+                ),
+
+                tabPanel("About page and sources",
+                         h3("About the author"),
+                         p("Cristina Agatep is a statistician currently working at Statistics
+                           Canada. A holder of a Bachelor's of Science in Statistics from 
+                           Simon Fraser University in Vancouver, she has now 
+                           returned to university for her Masters in Statistics at Carleton
+                           University."), 
+                         p("Raised in Vancouver, and now living in Ottawa, Cristina hopes to eventually work in the industry toward a
+                           greener future, with dreams to live abroad in New Zealand or Europe, where she can 
+                           witness possibilities for sustainable living. Right now, she is enjoying her 
+                           life in the capital city of Canada, while working very hard to avoid the wintery -30 degree chills 
+                           whenever possible."),
+                         a("Github link", href="https://github.com/CristinaAgatep/"),
+                         
+                         h3("Sources"),
+                         a("(1) Coronavirus Recovery", href="https://www.webmd.com/lung/covid-recovery-overview#1"), br(),
+                         a("(2) How to interpret Rt, a number to measure the pandemic in Quebec", href="https://www.cbc.ca/news/canada/montreal/quebec-rt-explained-1.5712632"), br(),
+                         a("(3) Canadian Rt values on Twitter", href="https://twitter.com/imgrund"), br(),
+                         a("(4) Pfizer-BioNTech COVID-19 Vaccine–Youth age 12 to 17", href="https://www.toronto.ca/wp-content/uploads/2021/05/97d6-COVID-19-Vaccine-Fact-Sheet-Youth.pdf"), br()
                 )
             
     )
 ))
+
+
+
+
+
+
